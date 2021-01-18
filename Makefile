@@ -155,7 +155,7 @@ FORMAT = ihex
 
 
 # Target file name (without extension).
-TARGET = c=key
+TARGET = ckey
 
 # List C source files here. (C dependencies are automatically generated.)
 SRC  = switches.c 
@@ -256,7 +256,7 @@ OBJDUMP = avr-objdump
 SIZE = avr-size
 NM = avr-nm
 AVRDUDE = avrdude
-REMOVE = rm -f
+REMOVE = rm
 COPY = cp
 WINSHELL = cmd
 CRCGEN := scripts/crcgen-avr.pl
@@ -558,7 +558,7 @@ ALL_ASFLAGS = -mmcu=$(MCU) -I$(SRCDIR) -x assembler-with-cpp $(ASFLAGS) $(CDEFS)
 # Default target.
 all: build
 
-build: elf hex bin eep lss 
+build: elf hex bin eep lss sym
 	$(E) "  SIZE   $(OBJDIR)/$(TARGET).elf"
 	$(Q)$(ELFSIZE)|grep -v debug
 
@@ -689,7 +689,7 @@ $(OBJDIR)/%.lss: $(OBJDIR)/%.elf
 # Create a symbol table from ELF output file.
 $(OBJDIR)/%.sym: $(OBJDIR)/%.elf
 	$(E) "  SYM    $<"
-	$(E)$(NM) -n $< > $@
+	$(Q)$(NM) -n $< > $@
 
 
 
@@ -736,21 +736,21 @@ clean_list :
 	$(Q)$(REMOVE) $(OBJDIR)/$(TARGET).hex
 	$(Q)$(REMOVE) $(OBJDIR)/$(TARGET).bin
 	$(Q)$(REMOVE) $(OBJDIR)/$(TARGET).eep
-	$(Q)$(REMOVE) $(OBJDIR)/$(TARGET).cof
+#$(Q)$(REMOVE) $(OBJDIR)/$(TARGET).cof
 	$(Q)$(REMOVE) $(OBJDIR)/$(TARGET).elf
 	$(Q)$(REMOVE) $(OBJDIR)/$(TARGET).map
 	$(Q)$(REMOVE) $(OBJDIR)/$(TARGET).sym
 	$(Q)$(REMOVE) $(OBJDIR)/$(TARGET).lss
 	$(Q)$(REMOVE) $(OBJ)
 	$(Q)$(REMOVE) $(OBJDIR)/autoconf.h
-	$(Q)$(REMOVE) $(OBJDIR)/*.bin
-	$(Q)$(REMOVE) $(LST)
-	$(Q)$(REMOVE) $(SRCDIR)/$(CSRC:.c=.s)
-	$(Q)$(REMOVE) $(SRCDIR)$(CSRC:.c=.d)
+#$(Q)$(REMOVE) $(OBJDIR)/*.bin
+#$(Q)$(REMOVE) $(LST)
+#$(Q)$(REMOVE) $(SRCDIR)/$(CSRC:.c=.s)
+#$(Q)$(REMOVE) $(SRCDIR)$(CSRC:.c=.d)
 	$(Q)$(REMOVE) .dep/*
-	$(Q)$(REMOVE) -rf codedoc
-	$(Q)$(REMOVE) -rf doxyinput
-	-$(Q)rmdir --ignore-fail-on-non-empty -p $(OBJDIR)
+#$(Q)$(REMOVE) -rf codedoc
+#$(Q)$(REMOVE) -rf doxyinput
+#-$(Q)rmdir --ignore-fail-on-non-empty -p $(OBJDIR)
 
 # Include the dependency files.
 -include $(shell mkdir .dep 2>/dev/null) $(wildcard .dep/*)
